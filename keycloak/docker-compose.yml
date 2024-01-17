@@ -10,11 +10,13 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=keycloak
+      - PGPORT=5432
   keycloak:
     image: quay.io/keycloak/keycloak
     ports:
       - "8443:8080"
     environment:
+      - keycloak.url=http://keycloak:8443
       - KC_DB=postgres
       - KC_DB_URL=jdbc:postgresql://postgres:5432/keycloak
       - KC_DB_USERNAME=admin
@@ -22,6 +24,11 @@ services:
       - KC_HOSTNAME=localhost
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_HOSTNAME_PORT=8443
+      - KC_HOST_STRICT_BACKCHANNEL="true"
+      - KC_HOSTNAME_STRICT_HTTPS=false
+      - KC_PROXY=edge
+      - KC_HTTP_ENABLED=true
     entrypoint:
       - /opt/keycloak/bin/kc.sh
       - start-dev
